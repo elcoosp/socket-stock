@@ -8,11 +8,13 @@ export default class ChartApp extends Component {
     chartsData: null
   }
   componentDidMount = () => {
-    subscribeToCharts((e, chartsData) =>
+    subscribeToCharts((e, chartsData) => {
+      console.log(e, chartsData)
+
       this.setState(s => ({
         chartsData
       }))
-    )
+    })
   }
 
   render() {
