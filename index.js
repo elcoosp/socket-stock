@@ -24,18 +24,20 @@ mongoose
   .then(connection => log('green', 'Connected to DB'))
   .catch(e => log('red', `DB ERROR: ${e}`))
 
-const server = express()
+// App setup
+const app = express(),
+  server = require('http').createServer(app),
+  io = socketIO(server)
+
+app
   .use(express.static(PUBLIC_FOLDER))
   .get('*', (req, res) => res.sendFile(INDEX))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`))
 
 // Web socket
-const io = socketIO(server)
-
 io.on('connection', socket => {
   log('green', 'Client connected to socket')
   socket.on('error', e => log('red', `SOCKET ERROR : ${e}`))
-  socket.on('addStockSymbol', addStockSymbol)
+  socket.on('addStockSymbol', name => addStockSymbol(socket, name))
 
   socket.emit('chartsData', emitChartsData())
 
@@ -43,3 +45,5 @@ io.on('connection', socket => {
     log('yellow', 'Client disconnected from socket')
   )
 })
+
+server.listen(PORT, () => console.log(`Listening on ${PORT}`))
