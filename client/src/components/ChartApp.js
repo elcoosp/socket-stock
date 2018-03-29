@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { subscribeToCharts } from '../api'
 import LineChart from './LineChart'
+import AddStockForm from './AddStockForm'
 
 export default class ChartApp extends Component {
   state = {
@@ -17,7 +18,10 @@ export default class ChartApp extends Component {
   render() {
     const { chartsData } = this.state
     return (
-      <div className="App">{chartsData && <LineChart data={chartsData} />}</div>
+      <div className="App">
+        {chartsData && <LineChart data={chartsData} />}
+        <AddStockForm />
+      </div>
     )
   }
 }
