@@ -23,7 +23,6 @@ export default class AddStockForm extends Component {
 
   render() {
     const { chartsData, error } = this.state
-    console.log(error)
 
     return (
       <section>
