@@ -1,10 +1,19 @@
 import React, { Component } from 'react'
-import { addStockSymbol } from '../api'
+import { addStockSymbol, subscribeToAddStockSymbolError } from '../api'
 
 export default class AddStockForm extends Component {
   state = {
-    stockSymbol: ''
+    stockSymbol: '',
+    error: null
   }
+  componentDidMount = () => {
+    subscribeToAddStockSymbolError(error =>
+      this.setState(s => ({
+        error
+      }))
+    )
+  }
+
   onSubmit = e => {
     e.preventDefault()
     addStockSymbol(this.state.stockSymbol)
