@@ -8,9 +8,7 @@ export default class ChartApp extends Component {
     chartsData: null
   }
   componentDidMount = () => {
-    subscribeToCharts((e, chartsData) => {
-      console.log(e, chartsData)
-
+    subscribeToCharts(chartsData => {
       this.setState(s => ({
         chartsData
       }))
@@ -19,6 +17,7 @@ export default class ChartApp extends Component {
 
   render() {
     const { chartsData } = this.state
+
     return (
       <div className="App">
         {chartsData && <LineChart data={chartsData} />}
