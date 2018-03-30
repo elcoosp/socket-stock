@@ -12,26 +12,28 @@ const getChartsData = async () => {
   // wait for all to resolve or reject then send back the error/data
   if (dbError) return { error: 'Can not get charts data' }
   ;[e, chartsData] = await to(
-    Promise.all([...stockSymbols.map(({ url }) => request(url))])
+    Promise.all([...stockSymbols.map(({ url }) => request(url))]).then(res =>
+      res.map(arr => JSON.parse(arr))
+    )
   )
 
   return e ? { error: 'Can not get charts data' } : chartsData
 }
 
-const emitChartsData = async socket => {
+const emitChartsData = async socketOrIo => {
   // Await to get all the charts data, then broadcast it
   ;[e, chartsData] = await to(getChartsData())
+
   return e
     ? { error: 'An error occured while retrieving charts data' }
-    : socket.emit('chartsData', chartsData)
+    : socketOrIo.emit('chartsData', chartsData)
 }
 
-const registerAddStockSymbol = socket =>
+const registerAddStockSymbol = (socket, io) =>
   socket.on('addStockSymbol', async name => {
     const emitError = msg => socket.emit('addStockSymbolError', { error: msg })
     //Check if the symbol is not already registered in DB
     ;[dbError, alreadyInDB] = await to(StockSymbol.findOne({ name }))
-
     if (dbError || alreadyInDB)
       return emitError('Symbol is already here or an error occured')
 
@@ -42,23 +44,23 @@ const registerAddStockSymbol = socket =>
     if (symbolNotFound)
       return emitError('Symbol not found')
 
-      // Save the symbol in db and emit all the charts
+      // Save the symbol in db and emit the charts to everybody (io)
     ;[saveError, stockSymbol] = await to(new StockSymbol({ name }).save())
     if (saveError) return emitError('An error occured while adding this symbol')
 
-    return emitChartsData(socket)
+    return emitChartsData(io)
   })
 
 // Web socket
 const launchSocket = server => {
   io = socketIO(server)
   io.on('connection', async socket => {
-    log('green', 'Client connected to socket')
+    log('green', 'Client cozzznnected to socket')
     socket.on('error', e => log('red', `SOCKET ERROR : ${e}`))
 
     emitChartsData(socket)
 
-    registerAddStockSymbol(socket)
+    registerAddStockSymbol(socket, io)
 
     socket.on('disconnect', () =>
       log('yellow', 'Client disconnected from socket')
