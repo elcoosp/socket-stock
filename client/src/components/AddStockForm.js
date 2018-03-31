@@ -6,28 +6,32 @@ export default class AddStockForm extends Component {
     stockSymbol: '',
     error: null
   }
-  componentDidMount = () => {
+  componentDidMount = () =>
     subscribeToAddStockSymbolError(({ error }) =>
       this.setState(s => ({
         error
       }))
     )
-  }
 
   onSubmit = e => {
+    const { stockSymbol } = this.state
     e.preventDefault()
-    addStockSymbol(this.state.stockSymbol)
+    if (stockSymbol.length > 0) {
+      addStockSymbol(stockSymbol)
+      this.setState(s => ({ stockSymbol: '' }))
+    }
   }
+
   onChange = ({ target: { value } }) =>
     this.setState(s => ({ stockSymbol: value }))
 
   render() {
-    const { chartsData, error } = this.state
+    const { error, stockSymbol } = this.state
 
     return (
       <section>
         <form onSubmit={this.onSubmit}>
-          <input type="text" onChange={this.onChange} />
+          <input type="text" onChange={this.onChange} value={stockSymbol} />
           <button>Add a symbol</button>
         </form>
         {error && <p>{error}</p>}
