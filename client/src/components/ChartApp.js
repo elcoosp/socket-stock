@@ -1,9 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { subscribeToCharts, subscribeToChartsDataError } from '../api'
+import styled from 'styled-components'
+
 import LineChart from './LineChart'
 import AddStockForm from './AddStockForm'
 import StockSymbolsList from './StockSymbolsList'
-
+const Layout = styled.main`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 export default class ChartApp extends Component {
   state = {
     chartsData: null,
@@ -26,10 +34,9 @@ export default class ChartApp extends Component {
 
   render() {
     const { chartsData, error } = this.state
-    console.log(chartsData)
 
     return (
-      <div className="App">
+      <Layout>
         {chartsData && (
           <Fragment>
             <LineChart data={chartsData} />
@@ -39,7 +46,7 @@ export default class ChartApp extends Component {
         {error && <p>{error}</p>}
 
         <AddStockForm />
-      </div>
+      </Layout>
     )
   }
 }

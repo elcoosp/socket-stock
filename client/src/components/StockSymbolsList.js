@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
 import { Button, TextInput, toaster } from 'evergreen-ui'
-
+import styled from 'styled-components'
 import { removeStockSymbol, subscribeToRemoveStockSymbolError } from '../api'
+
+const List = styled.ul`
+  padding: 0;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+  align-items: center;
+`
 
 export default class StockSymbolsList extends Component {
   componentDidMount = () => {
@@ -16,7 +26,7 @@ export default class StockSymbolsList extends Component {
     const { data } = this.props
     const symbolsName = Object.keys(data[0]).filter(v => v !== 'date')
     return (
-      <ul>
+      <List>
         {symbolsName.map(s => (
           <Button
             appearance="red"
@@ -27,7 +37,7 @@ export default class StockSymbolsList extends Component {
             {s}
           </Button>
         ))}
-      </ul>
+      </List>
     )
   }
 }

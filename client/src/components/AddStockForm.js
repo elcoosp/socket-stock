@@ -1,8 +1,17 @@
 import React, { Component } from 'react'
 import { Button, TextInput, toaster } from 'evergreen-ui'
+import styled from 'styled-components'
 
 import { addStockSymbol, subscribeToAddStockSymbolError } from '../api'
 
+const Form = styled.form`
+  width: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+`
 export default class AddStockForm extends Component {
   state = {
     stockSymbol: '',
@@ -27,13 +36,11 @@ export default class AddStockForm extends Component {
     const { stockSymbol, loading } = this.state
 
     return (
-      <section>
-        <form onSubmit={this.onSubmit}>
-          <TextInput type="text" onChange={this.onChange} value={stockSymbol} />
-          <Button>Add a symbol</Button>
-        </form>
+      <Form onSubmit={this.onSubmit}>
+        <TextInput type="text" onChange={this.onChange} value={stockSymbol} />
+        <Button>Add a symbol</Button>
         {loading && <p>{loading}</p>}
-      </section>
+      </Form>
     )
   }
 }
