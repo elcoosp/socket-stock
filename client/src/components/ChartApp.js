@@ -1,26 +1,43 @@
-import React, { Component } from 'react'
-import { subscribeToCharts } from '../api'
+import React, { Component, Fragment } from 'react'
+import { subscribeToCharts, subscribeToChartsDataError } from '../api'
 import LineChart from './LineChart'
 import AddStockForm from './AddStockForm'
+import StockSymbolsList from './StockSymbolsList'
 
 export default class ChartApp extends Component {
   state = {
-    chartsData: null
+    chartsData: null,
+    error: null
   }
   componentDidMount = () => {
     subscribeToCharts(chartsData => {
       this.setState(s => ({
-        chartsData
+        chartsData,
+        error: null
+      }))
+    })
+    subscribeToChartsDataError(({ error }) => {
+      this.setState(s => ({
+        chartsData: null,
+        error
       }))
     })
   }
 
   render() {
-    const { chartsData } = this.state
+    const { chartsData, error } = this.state
+    console.log(chartsData)
 
     return (
       <div className="App">
-        {chartsData && <LineChart data={chartsData} />}
+        {chartsData && (
+          <Fragment>
+            <LineChart data={chartsData} />
+            <StockSymbolsList data={chartsData} />
+          </Fragment>
+        )}
+        {error && <p>{error}</p>}
+
         <AddStockForm />
       </div>
     )
