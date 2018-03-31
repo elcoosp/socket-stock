@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, TextInput, toaster } from 'evergreen-ui'
+import { Button, toaster } from 'evergreen-ui'
 import styled from 'styled-components'
 import { removeStockSymbol, subscribeToRemoveStockSymbolError } from '../api'
 
@@ -9,10 +9,12 @@ const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
 
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 `
-
+const StyledButton = styled(Button)`
+  margin: 10px;
+`
 export default class StockSymbolsList extends Component {
   componentDidMount = () => {
     subscribeToRemoveStockSymbolError(({ error }) => toaster.warning(error))
@@ -28,14 +30,14 @@ export default class StockSymbolsList extends Component {
     return (
       <List>
         {symbolsName.map(s => (
-          <Button
+          <StyledButton
             appearance="red"
             onClick={() => this.remove(s)}
             key={s}
             value={s}
           >
             {s}
-          </Button>
+          </StyledButton>
         ))}
       </List>
     )

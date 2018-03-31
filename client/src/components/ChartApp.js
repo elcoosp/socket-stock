@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { subscribeToCharts, subscribeToChartsDataError } from '../api'
 import styled from 'styled-components'
-
+import { toaster } from 'evergreen-ui'
 import LineChart from './LineChart'
 import AddStockForm from './AddStockForm'
 import StockSymbolsList from './StockSymbolsList'
 const Layout = styled.main`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -25,9 +26,10 @@ export default class ChartApp extends Component {
       }))
     })
     subscribeToChartsDataError(({ error }) => {
+      toaster.warning(error)
+
       this.setState(s => ({
-        chartsData: null,
-        error
+        chartsData: null
       }))
     })
   }
@@ -37,15 +39,16 @@ export default class ChartApp extends Component {
 
     return (
       <Layout>
+        <AddStockForm />
+
         {chartsData && (
           <Fragment>
-            <LineChart data={chartsData} />
             <StockSymbolsList data={chartsData} />
+
+            <LineChart data={chartsData} />
           </Fragment>
         )}
         {error && <p>{error}</p>}
-
-        <AddStockForm />
       </Layout>
     )
   }

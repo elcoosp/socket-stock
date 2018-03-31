@@ -9,10 +9,8 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts'
-const labelFormatter = data => {
-  console.log(data)
-  return data
-}
+
+import CustomTooltip from './CustomTooltip'
 export default class Chart extends Component {
   render() {
     const { data } = this.props
@@ -37,7 +35,7 @@ export default class Chart extends Component {
                 />
               ) : null
           )}
-          <Tooltip labelFormatter={labelFormatter} />
+          <Tooltip content={<CustomTooltip />} />
         </LineChart>
       </ResponsiveContainer>
     )
