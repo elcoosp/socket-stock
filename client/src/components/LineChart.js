@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { LineChart, XAxis, YAxis, CartesianGrid, Line } from 'recharts'
 import { log } from 'util'
 export default class Chart extends Component {
-  getDate = data => data.data.date
   render() {
     const { data } = this.props
-    console.log(data)
 
     return (
       <LineChart width={500} height={300} data={data}>
