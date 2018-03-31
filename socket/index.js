@@ -39,6 +39,15 @@ const registerAddStockSymbol = (socket, io) =>
     return emitChartsData(io)
   })
 
+const registerRemoveStockSymbol = (socket, io) =>
+  socket.on('removeStockSymbol', async name => {
+    const emitError = msg =>
+      socket.emit('removeStockSymbolError', { error: msg })
+    ;[dbError, stockSymbol] = await to(StockSymbol.findOne({ name }).remove())
+
+    return dbError ? emitError('An error occured') : emitChartsData(io)
+  })
+
 // Web socket
 const launchSocket = server => {
   io = socketIO(server)
@@ -49,6 +58,7 @@ const launchSocket = server => {
     emitChartsData(socket)
 
     registerAddStockSymbol(socket, io)
+    registerRemoveStockSymbol(socket, io)
 
     socket.on('disconnect', () =>
       log('yellow', 'Client disconnected from socket')
