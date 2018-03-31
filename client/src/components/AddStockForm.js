@@ -1,24 +1,22 @@
 import React, { Component } from 'react'
+import { Button, TextInput, toaster } from 'evergreen-ui'
+
 import { addStockSymbol, subscribeToAddStockSymbolError } from '../api'
 
 export default class AddStockForm extends Component {
   state = {
     stockSymbol: '',
-    error: null
+    loading: false
   }
   componentDidMount = () =>
-    subscribeToAddStockSymbolError(({ error }) =>
-      this.setState(s => ({
-        error
-      }))
-    )
+    subscribeToAddStockSymbolError(({ error }) => toaster.warning(error))
 
   onSubmit = e => {
     const { stockSymbol } = this.state
     e.preventDefault()
     if (stockSymbol.length > 0) {
       addStockSymbol(stockSymbol)
-      this.setState(s => ({ stockSymbol: '' }))
+      this.setState(s => ({ stockSymbol: '', loading: true }))
     }
   }
 
@@ -26,15 +24,15 @@ export default class AddStockForm extends Component {
     this.setState(s => ({ stockSymbol: value }))
 
   render() {
-    const { error, stockSymbol } = this.state
+    const { stockSymbol, loading } = this.state
 
     return (
       <section>
         <form onSubmit={this.onSubmit}>
-          <input type="text" onChange={this.onChange} value={stockSymbol} />
-          <button>Add a symbol</button>
+          <TextInput type="text" onChange={this.onChange} value={stockSymbol} />
+          <Button>Add a symbol</Button>
         </form>
-        {error && <p>{error}</p>}
+        {loading && <p>{loading}</p>}
       </section>
     )
   }

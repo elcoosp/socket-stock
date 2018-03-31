@@ -1,16 +1,11 @@
 import React, { Component } from 'react'
+import { Button, TextInput, toaster } from 'evergreen-ui'
+
 import { removeStockSymbol, subscribeToRemoveStockSymbolError } from '../api'
 
 export default class StockSymbolsList extends Component {
-  state = {
-    error: null
-  }
   componentDidMount = () => {
-    subscribeToRemoveStockSymbolError(({ error }) =>
-      this.setState(s => ({
-        error
-      }))
-    )
+    subscribeToRemoveStockSymbolError(({ error }) => toaster.warning(error))
   }
 
   remove = name => {
@@ -21,16 +16,18 @@ export default class StockSymbolsList extends Component {
     const { data } = this.props
     const symbolsName = Object.keys(data[0]).filter(v => v !== 'date')
     return (
-      <section>
-        <ul>
-          {symbolsName.map(s => (
-            <li onClick={() => this.remove(s)} key={s} value={s}>
-              {s}
-            </li>
-          ))}
-        </ul>
-        {this.state.error && <p>{this.state.error}</p>}
-      </section>
+      <ul>
+        {symbolsName.map(s => (
+          <Button
+            appearance="red"
+            onClick={() => this.remove(s)}
+            key={s}
+            value={s}
+          >
+            {s}
+          </Button>
+        ))}
+      </ul>
     )
   }
 }
