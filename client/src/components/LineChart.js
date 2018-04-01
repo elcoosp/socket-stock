@@ -16,7 +16,7 @@ export default class Chart extends Component {
     const { data } = this.props
 
     return (
-      <ResponsiveContainer width="100%" height={500}>
+      <ResponsiveContainer width="90%" height={500}>
         <LineChart height={300} data={data}>
           <XAxis dataKey="date" />
           <YAxis />

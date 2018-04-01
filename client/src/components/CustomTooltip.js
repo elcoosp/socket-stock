@@ -3,7 +3,7 @@ import React from 'react'
 import { lowerCase, capitalize } from 'lodash'
 import styled from 'styled-components'
 const TooltipContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 5px;
