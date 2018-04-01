@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 const Footer = styled.footer`
   background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
@@ -6,10 +6,12 @@ const Footer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
+  clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
 `
 
 const Text = styled.p`
   text-align: center;
+  padding: 10px;
 `
 const Anchor = styled.a`
   text-decoration: none;
