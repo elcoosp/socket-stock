@@ -29,7 +29,7 @@ export default class Chart extends Component {
                   key={key}
                   type="monotone"
                   dataKey={datePoint => {
-                    return datePoint[key].close
+                    return datePoint[key] && datePoint[key].close
                   }}
                   stroke={randomColor()}
                 />
