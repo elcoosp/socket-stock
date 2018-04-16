@@ -16,7 +16,6 @@ const launchSocket = require('./socket'),
   PUBLIC_FOLDER = path.join(__dirname, 'client/build')
 
 // DB conneciton
-mongoose.set('debug', true)
 mongoose
   .connect(MONGODB_URI)
   .then(connection => log('green', 'Connected to DB'))
