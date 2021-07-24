@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "evergreen-ui": "^3.0.0",
+    "evergreen-ui": "^6.2.0",
     "lodash": "^4.17.5",
     "randomcolor": "^0.5.3",
     "react": "^16.2.0",
